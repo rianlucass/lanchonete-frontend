@@ -1,17 +1,18 @@
-type ButtonProps = {
-  text: string
-  onClick?: () => void
+import { ArrowRight } from "lucide-react";
+
+interface ButtonProps {
+  text: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, onClick }) => {
+const Button = ({ text }: ButtonProps) => {
   return (
     <button
-      onClick={onClick}
-      className="rounded-xl px-4 py-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition"
+      className="w-full flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2.5 rounded-xl shadow-md transition-all duration-300"
     >
       {text}
+      <ArrowRight className="w-4 h-4" />
     </button>
-  )
-}
+  );
+};
 
 export default Button;
