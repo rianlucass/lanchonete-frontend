@@ -15,7 +15,7 @@ const Header = () => {
               Cadastrar Funcionário
             </a>
             <a
-              href="/entrar"
+              href="/login"
               className="flex items-center gap-2 bg-white text-orange-600 px-4 py-2 rounded-md hover:bg-orange-100 transition shadow-sm"
             >
               <LogIn className="w-4 h-4" />
