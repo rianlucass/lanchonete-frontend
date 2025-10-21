@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { User, Mail, Lock, UserCircle, Shield } from "lucide-react";
-import Button from "../components/button";
+import { useNavigate } from "react-router-dom";
+
 import Logo from "../assets/logo.png";
 
 const FormRegister = () => {
@@ -12,6 +13,8 @@ const FormRegister = () => {
         role: "",
     });
 
+    const navigate = useNavigate();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -19,16 +22,19 @@ const FormRegister = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log(formData);
+
+
+        navigate("/");
     };
 
     return (
-        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50 p-10">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50">
             <div className="w-full max-w-md bg-white shadow-lg rounded-2xl px-8 py-10">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div className="flex flex-col items-center mb-4">
                         <img src={Logo} alt="Logo" className="w-20 drop-shadow-md" />
                         <h1 className="text-2xl font-bold text-orange-700 mt-2">
-                            Criar Conta
+                            Lanchonete Sabor & Arte
                         </h1>
                         <p className="text-gray-600 text-sm text-center">
                             Preencha os campos abaixo para se cadastrar
@@ -111,7 +117,13 @@ const FormRegister = () => {
                             </select>
                         </div>
                     </div>
-                    <Button text="Cadastrar" />
+
+                    <button
+                        type="submit"
+                        className="mt-3 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-all"
+                    >
+                        Cadastrar
+                    </button>
                 </form>
 
                 <p className="text-sm text-gray-600 mt-6 text-center">
