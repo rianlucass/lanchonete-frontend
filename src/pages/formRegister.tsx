@@ -2,29 +2,38 @@ import { useState } from "react";
 import { User, Mail, Lock, UserCircle, Shield } from "lucide-react";
 import Button from "../components/button";
 import Logo from "../assets/logo.png";
+import { userService } from "../service/users/userService";
 
 const FormRegister = () => {
     const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        name: "",
-        password: "",
-        role: "",
+        name: '',
+        username: '',
+        email: '',
+        password: '',
+        role: ''
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formData);
+        try {
+            const response = await userService.register(formData);
+            console.log('User registered successfully:', response.data);
+            window.location.href = "/login";            
+        }
+        catch (error) {
+            console.error('Error registering user:', error);
+        }
     };
 
     return (
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50 p-10">
             <div className="w-full max-w-md bg-white shadow-lg rounded-2xl px-8 py-10">
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <div className="flex flex-col items-center mb-4">
                         <img src={Logo} alt="Logo" className="w-20 drop-shadow-md" />
                         <h1 className="text-2xl font-bold text-orange-700 mt-2">
@@ -43,9 +52,9 @@ const FormRegister = () => {
                                 type="text"
                                 name="name"
                                 placeholder="Digite seu nome"
+                                className="w-full outline-none"
                                 value={formData.name}
                                 onChange={handleChange}
-                                className="w-full outline-none"
                             />
                         </div>
                     </div>
@@ -58,9 +67,9 @@ const FormRegister = () => {
                                 type="text"
                                 name="username"
                                 placeholder="Escolha um username"
+                                className="w-full outline-none"
                                 value={formData.username}
                                 onChange={handleChange}
-                                className="w-full outline-none"
                             />
                         </div>
                     </div>
@@ -73,9 +82,9 @@ const FormRegister = () => {
                                 type="email"
                                 name="email"
                                 placeholder="Digite seu email"
+                                className="w-full outline-none"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full outline-none"
                             />
                         </div>
                     </div>
@@ -88,9 +97,9 @@ const FormRegister = () => {
                                 type="password"
                                 name="password"
                                 placeholder="Crie uma senha"
+                                className="w-full outline-none"
                                 value={formData.password}
                                 onChange={handleChange}
-                                className="w-full outline-none"
                             />
                         </div>
                     </div>
@@ -101,22 +110,23 @@ const FormRegister = () => {
                             <Shield className="w-5 h-5 text-orange-600 mr-2" />
                             <select
                                 name="role"
+                                className="w-full outline-none bg-transparent"
                                 value={formData.role}
                                 onChange={handleChange}
-                                className="w-full outline-none bg-transparent"
                             >
                                 <option value="">Selecione uma função</option>
-                                <option value="USER">USER</option>
-                                <option value="ADMIN">ADMIN</option>
+                                <option value="USER">Funcionário</option>
+                                <option value="ADMIN">Administrador</option>
                             </select>
                         </div>
                     </div>
+
                     <Button text="Cadastrar" />
                 </form>
 
                 <p className="text-sm text-gray-600 mt-6 text-center">
                     Já possui conta?{" "}
-                    <a href="/entrar" className="text-orange-600 font-medium hover:underline">
+                    <a href="/login" className="text-orange-600 font-medium hover:underline">
                         Entrar
                     </a>
                 </p>
