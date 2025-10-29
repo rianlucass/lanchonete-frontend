@@ -16,10 +16,36 @@ const FormRegister = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    /*const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log(formData);
-    };
+    };*/
+
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+        const response = await fetch("http://localhost:8080/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            alert("Usuário cadastrado com sucesso!");
+            setFormData({ username: "", email: "", name: "", password: "", role: "" });
+        } else {
+            const errorData = await response.json();
+            alert(`Erro ao cadastrar: ${errorData.message || "Tente novamente"}`);
+        }
+    } catch (error) {
+        alert("Erro de conexão com o servidor.");
+        console.error(error);
+    }
+};
+
 
     return (
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50 p-10">
