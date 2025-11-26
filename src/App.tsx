@@ -7,6 +7,7 @@ import Dashboard from "./pages/dashboard";
 import Produtos from "./pages/produtos";
 import Pedidos from './pages/pedidos';
 import HistoricoPedidos from './pages/historicoPedidos';
+import Relatorio from './pages/relatorio';
 
 import HeaderPublic from './components/HeaderPublic';
 import HeaderPrivate from './components/HeaderPrivate';
@@ -54,6 +55,15 @@ const App: React.FC = () => {
           element={
             <PrivateRoute>
               <Pedidos />
+            </PrivateRoute>
+          }
+        />
+        
+        <Route
+          path="/relatorio"
+          element={
+            <PrivateRoute>
+              <Relatorio />
             </PrivateRoute>
           }
         />

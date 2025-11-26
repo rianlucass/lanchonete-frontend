@@ -1,10 +1,11 @@
-import { LogOut, ShoppingBag, Package, FileText, Home } from "lucide-react";
+import { LogOut, ShoppingBag, Package, FileText, Home, Receipt } from "lucide-react";
 import { Link } from "react-router-dom"; // ← Importe o Link
 import { useAuth } from "../context/AuthContext";
 import Logo from "../assets/logo.png";
 
 const HeaderPrivate = () => {
   const { logout } = useAuth();
+  
 
   const handleLogout = () => {
     logout();
@@ -36,6 +37,11 @@ const HeaderPrivate = () => {
             <Link to="/pedidos" className="flex items-center gap-2 hover:text-white transition">
               <ShoppingBag className="w-4 h-4" />
               Pedidos
+            </Link>
+            
+            <Link to="/relatorio" className="flex items-center gap-2 hover:text-white transition">
+              <Receipt className="w-4 h-4" />
+              Relatório
             </Link>
 
             <Link to="/historico" className="flex items-center gap-2 hover:text-white transition">
