@@ -1,18 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-
 import FormLogin from './pages/formLogin';
 import Cadastrar from './pages/formRegister';
 import Dashboard from "./pages/dashboard";
 import Produtos from "./pages/produtos";
-import Pedidos from './pages/pedidos';
-import HistoricoPedidos from './pages/historicoPedidos';
+import Pedidos from './pages/Pedidos';
+import HistoricoPedidos from './pages/HistoricoPedidos';
 import Relatorio from './pages/relatorio';
-
 import HeaderPublic from './components/HeaderPublic';
 import HeaderPrivate from './components/HeaderPrivate';
 import Footer from './components/Footer';
-
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 
