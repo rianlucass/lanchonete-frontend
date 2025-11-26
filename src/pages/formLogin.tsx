@@ -1,12 +1,15 @@
 import { User, Lock } from "lucide-react";
-import Button from "../components/button";
+import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userService } from "../service/users/userService";
+import { useAuth } from "../context/AuthContext";
 
 const FormLogin = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { login } = useAuth();
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -37,9 +40,10 @@ const FormLogin = () => {
       const response = await userService.login(credentials);
       const token = response.data.token;
 
-      localStorage.setItem("token", token);
+      login(token);
 
       navigate("/dashboard");
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);

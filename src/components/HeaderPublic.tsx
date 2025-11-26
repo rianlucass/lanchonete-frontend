@@ -1,7 +1,7 @@
 import { LogIn, UserPlus, Menu } from "lucide-react";
 import Logo from "../assets/logo.png";
 
-const Header = () => {
+const HeaderPublic = () => {
   return (
     <header className="p-2 bg-gradient-to-r from-orange-400 via-orange-600 to-amber-600 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,4 +31,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderPublic;

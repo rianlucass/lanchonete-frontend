@@ -1,28 +1,73 @@
 import { Routes, Route } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 import FormLogin from './pages/formLogin';
 import Cadastrar from './pages/formRegister';
 import Dashboard from "./pages/dashboard";
 import Produtos from "./pages/produtos";
+import Pedidos from './pages/pedidos';
+import HistoricoPedidos from './pages/historicoPedidos';
 
-import Pedidos from './pages/Pedidos';
-import HistoricoPedidos from './pages/HistoricoPedidos';
+import HeaderPublic from './components/HeaderPublic';
+import HeaderPrivate from './components/HeaderPrivate';
+import Footer from './components/Footer';
 
-import Header from './components/header';
-import Footer from './components/footer';
+import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
 
 const App: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <>
-      <Header />
+      {isAuthenticated ? <HeaderPrivate /> : <HeaderPublic />}
+
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/login" element={<FormLogin />} />
-        <Route path="/cadastrar" element={<Cadastrar />} />
-        <Route path="/produtos" element={<Produtos />} />
-        <Route path="/pedidos" element={<Pedidos />} />          
-        <Route path="/historico" element={<HistoricoPedidos />} /> 
+        {/* ROTAS PÚBLICAS */}
+        <Route path="/" element={<PublicRoute><FormLogin /></PublicRoute>} /> //alterar aqui depois com outra pagina inicial de apresentação
+
+        <Route path="/login" element={<PublicRoute><FormLogin /></PublicRoute>} />
+        
+        <Route path="/cadastrar" element={<PublicRoute><Cadastrar /></PublicRoute>} />
+
+        {/* ROTAS PRIVADAS */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/produtos"
+          element={
+            <PrivateRoute>
+              <Produtos />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/pedidos"
+          element={
+            <PrivateRoute>
+              <Pedidos />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/historico"
+          element={
+            <PrivateRoute>
+              <HistoricoPedidos />
+            </PrivateRoute>
+          }
+        />
       </Routes>
+
       <Footer />
     </>
   );
