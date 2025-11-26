@@ -56,10 +56,30 @@ const FormRegister = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formData);
+        if (!validate()) return;
+
+        setServerError(null);
+
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { confirmPassword, ...dataToSend } = formData;
+            const response = await userService.register(dataToSend);
+            console.log("User registered successfully:", response.data);
+            window.location.href = "/login?success=Conta criada com sucesso!";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Error registering user:", error);
+
+            if (error.response && error.response.data && error.response.data.message) {
+                setServerError(error.response.data.message);
+            } else {
+                setServerError("Ocorreu um erro inesperado. Tente novamente.");
+            }
+        }
     };
+
 
     return (
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50 p-10">
