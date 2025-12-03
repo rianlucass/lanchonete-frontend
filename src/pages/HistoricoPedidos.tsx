@@ -18,6 +18,7 @@ interface Pedido {
   total: string;
   status: string;
   data: string;
+  dataOriginal: Date;
   metodoPagamento: string;
   itens: OrderItem[];
 }
@@ -61,18 +62,29 @@ export default function HistoricoPedidos() {
 
     try {
       const response = await api.get<OrderAPIResponse[]>("/orders/history");
-      const dados = response.data.map((p) => ({
-        id: p.id,
-        numeroPedido: p.orderNumber,
-        cliente: p.clientName,
-        total: p.totalAmount.toFixed(2).replace(".", ","),
-        status: p.status.toLowerCase(),
-        data: new Date(p.dateTime).toLocaleDateString("pt-BR"),
-        metodoPagamento: p.paymentMethod,
-        itens: p.items,
-      }));
+      
+      console.log("Dados recebidos da API:", response.data); // Debug
+      
+      const dados = response.data.map((p) => {
+        // Validação e tratamento de campos opcionais
+        const pedido = {
+          id: p.id || "",
+          numeroPedido: p.orderNumber || "N/A",
+          cliente: p.clientName || "Cliente não informado",
+          total: (p.totalAmount || 0).toFixed(2).replace(".", ","),
+          status: (p.status || "pending").toLowerCase(),
+          data: p.dateTime ? new Date(p.dateTime).toLocaleDateString("pt-BR") : "Data inválida",
+          dataOriginal: p.dateTime ? new Date(p.dateTime) : new Date(0), // Para ordenação
+          metodoPagamento: p.paymentMethod || "Não informado",
+          itens: Array.isArray(p.items) ? p.items : [],
+        };
+        
+        console.log("Pedido mapeado:", pedido); // Debug
+        return pedido;
+      }).sort((a, b) => b.dataOriginal.getTime() - a.dataOriginal.getTime()); // Mais recentes primeiro
 
       setPedidos(dados);
+      console.log("Total de pedidos carregados:", dados.length); // Debug
     } catch (e) {
       console.error("Erro ao carregar pedidos:", e);
       setErro("Erro ao carregar histórico de pedidos. Tente novamente.");
@@ -406,20 +418,26 @@ export default function HistoricoPedidos() {
 
             <h3 className="font-semibold text-lg mb-4 text-gray-800">Itens do Pedido</h3>
 
-            <div className="space-y-4">
-              {pedidoSelecionado.itens.map((item) => (
-                <div key={item.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                  <p className="font-bold text-gray-800 mb-2">{item.productName}</p>
-                  <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-                    <p><span className="font-medium">Quantidade:</span> {item.quantity}</p>
-                    <p><span className="font-medium">Preço Unit.:</span> R$ {item.unitPrice.toFixed(2).replace(".", ",")}</p>
-                    <p className="col-span-2"><span className="font-medium">Subtotal:</span> 
-                      <span className="font-bold text-orange-600"> R$ {item.subtotal.toFixed(2).replace(".", ",")}</span>
-                    </p>
+            {pedidoSelecionado.itens && pedidoSelecionado.itens.length > 0 ? (
+              <div className="space-y-4">
+                {pedidoSelecionado.itens.map((item, index) => (
+                  <div key={item.id || index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <p className="font-bold text-gray-800 mb-2">{item.productName || "Produto não informado"}</p>
+                    <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
+                      <p><span className="font-medium">Quantidade:</span> {item.quantity || 0}</p>
+                      <p><span className="font-medium">Preço Unit.:</span> R$ {(item.unitPrice || 0).toFixed(2).replace(".", ",")}</p>
+                      <p className="col-span-2"><span className="font-medium">Subtotal:</span> 
+                        <span className="font-bold text-orange-600"> R$ {(item.subtotal || 0).toFixed(2).replace(".", ",")}</span>
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-700">
+                Nenhum item encontrado para este pedido.
+              </div>
+            )}
 
             <div className="mt-6 pt-4 border-t border-gray-300">
               <p className="text-xl font-bold text-gray-800">
