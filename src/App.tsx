@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import FormLogin from './pages/formLogin';
 import Cadastrar from './pages/formRegister';
@@ -14,15 +14,20 @@ import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 
 const App: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  // Aguarda verificação de autenticação antes de renderizar rotas
+  if (loading) {
+    return null; // ou <LoadingScreen /> se preferir
+  }
 
   return (
     <>
       {isAuthenticated ? <HeaderPrivate /> : <HeaderPublic />}
 
       <Routes>
-        {/* ROTAS PÚBLICAS */}
-        <Route path="/" element={<PublicRoute><FormLogin /></PublicRoute>} /> //alterar aqui depois com outra pagina inicial de apresentação
+        {/* ROTA RAIZ - Redireciona baseado no estado de autenticação */}
+        <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
 
         <Route path="/login" element={<PublicRoute><FormLogin /></PublicRoute>} />
         
