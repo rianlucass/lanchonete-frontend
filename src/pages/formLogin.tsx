@@ -8,7 +8,6 @@ import { useAuth } from "../context/AuthContext";
 const FormLogin = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
   const { login } = useAuth();
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -38,15 +37,8 @@ const FormLogin = () => {
 
     try {
       const response = await userService.login(credentials);
-      const token = response.data.token;
 
-      // ⚠️ TEMPORÁRIO - Simulação (REMOVER na integração com backend)
-      const role = credentials.username.toLowerCase().includes("admin")
-        ? "ADMIN"
-        : "FUNCIONARIO";
-
-      // TODO: Descomentar quando backend retornar response.data.role
-      // const role = response.data.role as "ADMIN" | "FUNCIONARIO";
+      const { token, role } = response.data;
 
       login(token, role);
 
@@ -55,10 +47,9 @@ const FormLogin = () => {
       } else {
         navigate("/pedidos");
       }
-
     } catch (error: any) {
       console.error("Erro ao fazer login:", error);
-      if (error.response && error.response.status === 401) {
+      if (error.response?.status === 401) {
         setErrorMessage("Usuário ou senha incorretos.");
       } else {
         setErrorMessage("Erro ao conectar ao servidor. Tente novamente.");
@@ -73,59 +64,50 @@ const FormLogin = () => {
           <h1 className="text-center font-extrabold text-3xl text-orange-600">
             Entrar
           </h1>
-          <p className="text-gray-500 text-center text-sm mb-3">
-            Acesse sua conta e acompanhe as novidades do sistema
-          </p>
 
           {successMessage && (
-            <div className="w-full bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-xl text-center mb-3">
+            <div className="w-full bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-xl text-center">
               {successMessage}
             </div>
           )}
 
           {errorMessage && (
-            <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-xl text-center mb-3">
+            <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-xl text-center">
               {errorMessage}
             </div>
           )}
 
-          <div className="flex flex-col gap-1">
+          <div>
             <label className="text-sm text-gray-700">Usuário</label>
-            <div className="flex items-center gap-2 border border-gray-300 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-orange-400 transition-all">
+            <div className="flex items-center gap-2 border rounded-xl px-3 py-2">
               <User className="w-5 h-5 text-gray-400" />
               <input
-                className="w-full bg-transparent outline-none text-gray-700"
                 type="text"
                 name="username"
-                placeholder="Digite seu username"
                 value={credentials.username}
                 onChange={handleChange}
                 required
+                className="w-full outline-none"
               />
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
+          <div>
             <label className="text-sm text-gray-700">Senha</label>
-            <div className="flex items-center gap-2 border border-gray-300 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-orange-400 transition-all">
+            <div className="flex items-center gap-2 border rounded-xl px-3 py-2">
               <Lock className="w-5 h-5 text-gray-400" />
               <input
-                className="w-full bg-transparent outline-none text-gray-700"
                 type="password"
                 name="password"
-                placeholder="Digite sua senha"
                 value={credentials.password}
                 onChange={handleChange}
                 required
+                className="w-full outline-none"
               />
             </div>
           </div>
 
           <Button text="Entrar" />
-
-          <p className="text-xs text-center text-gray-400 mt-3">
-            Fique de olho no e-mail para receber atualizações.
-          </p>
         </form>
       </div>
     </div>
