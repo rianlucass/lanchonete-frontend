@@ -307,7 +307,7 @@ const Pedidos = () => {
                                 <div className="w-full h-24 bg-gray-100 rounded-lg mb-3 overflow-hidden flex items-center justify-center">
                                   {product.imageURL ? (
                                     <img
-                                      src={`http://localhost:8080/uploads/${product.imageURL}`}
+                                      src={`${import.meta.env.VITE_API_URL}/uploads/${product.imageURL}`}
                                       alt={product.name}
                                       className="w-full h-full object-cover"
                                     />

@@ -1,5 +1,5 @@
 import { User, Lock } from "lucide-react";
-import Button from "../components/button";
+import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { userService } from "../service/users/userService";
@@ -40,13 +40,8 @@ const FormLogin = () => {
       const response = await userService.login(credentials);
       const token = response.data.token;
 
-      // ⚠️ TEMPORÁRIO - Simulação (REMOVER na integração com backend)
-      const role = credentials.username.toLowerCase().includes("admin")
-        ? "ADMIN"
-        : "FUNCIONARIO";
-
       // TODO: Descomentar quando backend retornar response.data.role
-      // const role = response.data.role as "ADMIN" | "FUNCIONARIO";
+      const role = response.data.role as "ADMIN" | "FUNCIONARIO";
 
       login(token, role);
 

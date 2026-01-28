@@ -9,7 +9,7 @@ import HistoricoPedidos from "./pages/HistoricoPedidos";
 import Relatorio from "./pages/relatorio";
 import HeaderPublic from "./components/HeaderPublic";
 import HeaderPrivate from "./components/HeaderPrivate";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 
