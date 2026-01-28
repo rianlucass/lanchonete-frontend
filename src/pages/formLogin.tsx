@@ -6,6 +6,51 @@ import { userService } from "../service/users/userService";
 import { useAuth } from "../context/AuthContext";
 
 const FormLogin = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const state = location.state as { message?: string };
+    if (state?.message) {
+      setSuccessMessage(state.message);
+      setTimeout(() => setSuccessMessage(""), 5000);
+    }
+  }, [location]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCredentials((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    try {
+      const response = await userService.login(credentials);
+      const { token, role } = response.data;
+
+      login(token, role);
+      navigate(role === "ADMIN" ? "/dashboard" : "/pedidos");
+    } catch (error: any) {
+      setErrorMessage(
+        error.response?.data?.message || "Erro ao fazer login. Verifique suas credenciais."
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50">
       <div className="w-96 bg-white/90 backdrop-blur-md shadow-lg px-8 py-10 rounded-2xl border border-gray-200">
