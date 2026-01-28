@@ -1,4 +1,4 @@
-import { LogOut, ShoppingBag, Package, FileText, Home, Receipt } from "lucide-react";
+import { LogOut, ShoppingBag, Package, FileText, Home, Receipt, Warehouse } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Logo from "../assets/logo.png";
@@ -41,6 +41,11 @@ const HeaderPrivate = () => {
             <Link to="/pedidos" className="flex items-center gap-2 hover:text-white transition">
               <ShoppingBag className="w-4 h-4" />
               Pedidos
+            </Link>
+
+            <Link to="/estoque" className="flex items-center gap-2 hover:text-white transition">
+              <Warehouse className="w-4 h-4" />
+              Estoque
             </Link>
 
             {/* APENAS ADMIN VÊ ESSAS OPÇÕES */}
