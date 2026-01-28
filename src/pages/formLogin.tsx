@@ -44,6 +44,7 @@ const FormLogin = () => {
 
       login(token, role);
       navigate(role === "ADMIN" ? "/dashboard" : "/pedidos");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setErrorMessage(
         error.response?.data?.message || "Erro ao fazer login. Verifique suas credenciais."

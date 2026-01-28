@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { User, Mail, Lock, UserCircle, Shield, Eye, EyeOff } from "lucide-react";
-import Button from "../components/button";
+import Button from "../components/Button";
 import Logo from "../assets/logo.png";
 import { userService } from "../service/users/userService";
 
