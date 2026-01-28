@@ -7,6 +7,7 @@ import Produtos from "./pages/produtos";
 import Pedidos from "./pages/Pedidos";
 import HistoricoPedidos from "./pages/HistoricoPedidos";
 import Relatorio from "./pages/relatorio";
+import Estoque from "./pages/Estoque";
 import HeaderPublic from "./components/HeaderPublic";
 import HeaderPrivate from "./components/HeaderPrivate";
 import Footer from "./components/Footer";
@@ -80,6 +81,19 @@ const App: React.FC = () => {
             <PrivateRoute>
               {user?.role === "ADMIN" ? (
                 <Produtos />
+              ) : (
+                <Navigate to="/pedidos" replace />
+              )}
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/estoque"
+          element={
+            <PrivateRoute>
+              {user?.role === "ADMIN" ? (
+                <Estoque />
               ) : (
                 <Navigate to="/pedidos" replace />
               )}

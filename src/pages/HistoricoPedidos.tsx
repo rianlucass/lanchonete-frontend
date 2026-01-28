@@ -61,7 +61,7 @@ export default function HistoricoPedidos() {
     setErro(null);
 
     try {
-      const response = await api.get<OrderAPIResponse[]>("/orders/history");
+      const response = await api.get<OrderAPIResponse[]>("/api/orders/history");
       
       console.log("Dados recebidos da API:", response.data); // Debug
       
