@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Plus, Minus, ShoppingCart, Trash2, CheckCircle, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
