@@ -15,7 +15,6 @@ import PublicRoute from "./routes/PublicRoute";
 
 const App: React.FC = () => {
   const { isAuthenticated, loading, user } = useAuth();
-  
 
   if (loading) {
     return null;
@@ -130,6 +129,5 @@ const App: React.FC = () => {
     </>
   );
 };
-
 
 export default App;

@@ -6,61 +6,6 @@ import { userService } from "../service/users/userService";
 import { useAuth } from "../context/AuthContext";
 
 const FormLogin = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const { login } = useAuth();
-
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const message = params.get("success");
-    if (message) {
-      setSuccessMessage(message);
-      window.history.replaceState({}, document.title, "/login");
-    }
-  }, [location]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-
-    try {
-      const response = await userService.login(credentials);
-      const token = response.data.token;
-
-      // TODO: Descomentar quando backend retornar response.data.role
-      const role = response.data.role as "ADMIN" | "FUNCIONARIO";
-
-      login(token, role);
-
-      if (role === "ADMIN") {
-        navigate("/dashboard");
-      } else {
-        navigate("/pedidos");
-      }
-
-    } catch (error: any) {
-      console.error("Erro ao fazer login:", error);
-      if (error.response && error.response.status === 401) {
-        setErrorMessage("Usuário ou senha incorretos.");
-      } else {
-        setErrorMessage("Erro ao conectar ao servidor. Tente novamente.");
-      }
-    }
-  };
-
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50">
       <div className="w-96 bg-white/90 backdrop-blur-md shadow-lg px-8 py-10 rounded-2xl border border-gray-200">
