@@ -21,7 +21,6 @@ const Produtos = () => {
     name: "",
     price: "",
     category: "SALGADOS",
-    stock: "",
     description: "",
     image: null as File | null
   });
@@ -61,7 +60,6 @@ const Produtos = () => {
       name: "",
       price: "",
       category: activeCategory,
-      stock: "",
       description: "",
       image: null
     });
@@ -77,7 +75,6 @@ const Produtos = () => {
       name: produto.name,
       price: produto.price,
       category: produto.category,
-      stock: produto.stock,
       description: produto.description || "",
       image: null
     });
@@ -136,7 +133,6 @@ const Produtos = () => {
     formDataToSend.append("name", formData.name);
     formDataToSend.append("price", formData.price);
     formDataToSend.append("category", formData.category);
-    formDataToSend.append("stock", formData.stock);
     formDataToSend.append("description", formData.description);
 
     if (formData.image) {
@@ -171,7 +167,6 @@ const Produtos = () => {
         name: "",
         price: "",
         category: activeCategory,
-        stock: "",
         description: "",
         image: null
       });
@@ -301,14 +296,6 @@ const Produtos = () => {
                   R$ {Number(produto.price).toFixed(2)}
                 </p>
 
-                {/* Estoque */}
-                <p className="text-sm mt-1 text-gray-600">
-                  Estoque:{" "}
-                  <span className={`font-medium ${produto.stock < 10 ? 'text-red-600' : 'text-green-600'}`}>
-                    {produto.stock ?? 0}
-                  </span>
-                </p>
-
                 {/* Descrição (condicional) */}
                 {produto.description && (
                   <p className="text-sm mt-2 text-gray-600 line-clamp-2">
@@ -426,20 +413,6 @@ const Produtos = () => {
                         </option>
                       ))}
                     </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Estoque
-                    </label>
-                    <input
-                      name="stock"
-                      type="number"
-                      placeholder="Quantidade em estoque"
-                      value={formData.stock}
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    />
                   </div>
 
                   <div>

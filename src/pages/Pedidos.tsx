@@ -193,7 +193,7 @@ const Pedidos = () => {
       };
 
       const response = await axios.post<OrderResponse>(
-        "http://localhost:8080/orders",
+        `${import.meta.env.VITE_API_URL}/api/orders`,
         orderData,
         {
           headers: {
