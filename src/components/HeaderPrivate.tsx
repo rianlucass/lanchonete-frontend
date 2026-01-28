@@ -1,15 +1,13 @@
 import { LogOut, ShoppingBag, Package, FileText, Home, Receipt } from "lucide-react";
-import { Link } from "react-router-dom"; // ← Importe o Link
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Logo from "../assets/logo.png";
 
 const HeaderPrivate = () => {
-  const { logout } = useAuth();
-  
+  const { logout, user } = useAuth();
 
   const handleLogout = () => {
     logout();
-    // Não precisa mais do window.location.href
   };
 
   return (
@@ -18,36 +16,47 @@ const HeaderPrivate = () => {
         <div className="flex items-center justify-between h-16">
           
           <div className="flex items-center space-x-3">
-            <Link to="/dashboard"> {/* ← Use Link em vez de <a> */}
+            <Link to={user?.role === "ADMIN" ? "/dashboard" : "/pedidos"}>
               <img src={Logo} alt="Logo" className="h-35 w-auto" />
             </Link>
           </div>
 
           <nav className="hidden md:flex items-center space-x-6 text-white/90">
-            <Link to="/dashboard" className="flex items-center gap-2 hover:text-white transition">
-              <Home className="w-4 h-4" />
-              Dashboard
-            </Link>
+            {/* APENAS ADMIN VÊ ESSAS OPÇÕES */}
+            {user?.role === "ADMIN" && (
+              <>
+                <Link to="/dashboard" className="flex items-center gap-2 hover:text-white transition">
+                  <Home className="w-4 h-4" />
+                  Dashboard
+                </Link>
 
-            <Link to="/produtos" className="flex items-center gap-2 hover:text-white transition">
-              <Package className="w-4 h-4" />
-              Produtos
-            </Link>
+                <Link to="/produtos" className="flex items-center gap-2 hover:text-white transition">
+                  <Package className="w-4 h-4" />
+                  Produtos
+                </Link>
+              </>
+            )}
 
+            {/* ADMIN E FUNCIONÁRIO VEEM PEDIDOS */}
             <Link to="/pedidos" className="flex items-center gap-2 hover:text-white transition">
               <ShoppingBag className="w-4 h-4" />
               Pedidos
             </Link>
-            
-            <Link to="/relatorio" className="flex items-center gap-2 hover:text-white transition">
-              <Receipt className="w-4 h-4" />
-              Relatório
-            </Link>
 
-            <Link to="/historico" className="flex items-center gap-2 hover:text-white transition">
-              <FileText className="w-4 h-4" />
-              Histórico
-            </Link>
+            {/* APENAS ADMIN VÊ ESSAS OPÇÕES */}
+            {user?.role === "ADMIN" && (
+              <>
+                <Link to="/relatorio" className="flex items-center gap-2 hover:text-white transition">
+                  <Receipt className="w-4 h-4" />
+                  Relatório
+                </Link>
+
+                <Link to="/historico" className="flex items-center gap-2 hover:text-white transition">
+                  <FileText className="w-4 h-4" />
+                  Histórico
+                </Link>
+              </>
+            )}
 
             <button
               onClick={handleLogout}

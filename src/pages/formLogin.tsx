@@ -6,55 +6,6 @@ import { userService } from "../service/users/userService";
 import { useAuth } from "../context/AuthContext";
 
 const FormLogin = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const { login } = useAuth();
-
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const message = params.get("success");
-    if (message) {
-      setSuccessMessage(message);
-      window.history.replaceState({}, document.title, "/login");
-    }
-  }, [location]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-
-    try {
-      const response = await userService.login(credentials);
-      const token = response.data.token;
-
-      login(token);
-
-      navigate("/dashboard");
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.error("Erro ao fazer login:", error);
-      if (error.response && error.response.status === 401) {
-        setErrorMessage("Usuário ou senha incorretos.");
-      } else {
-        setErrorMessage("Erro ao conectar ao servidor. Tente novamente.");
-      }
-    }
-  };
-
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-50">
       <div className="w-96 bg-white/90 backdrop-blur-md shadow-lg px-8 py-10 rounded-2xl border border-gray-200">
@@ -93,6 +44,7 @@ const FormLogin = () => {
               />
             </div>
           </div>
+
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-700">Senha</label>
             <div className="flex items-center gap-2 border border-gray-300 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-orange-400 transition-all">
@@ -107,15 +59,6 @@ const FormLogin = () => {
                 required
               />
             </div>
-          </div>
-
-          <div className="flex justify-end">
-            <a
-              className="text-sm text-orange-500 hover:text-orange-600 transition-colors"
-              href="#"
-            >
-              Esqueci a senha
-            </a>
           </div>
 
           <Button text="Entrar" />

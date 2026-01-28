@@ -39,7 +39,7 @@ const Produtos = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:8080/product/category/${category}`,
+        `${import.meta.env.VITE_API_URL}/product/category/${category}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -81,7 +81,7 @@ const Produtos = () => {
       description: produto.description || "",
       image: null
     });
-    setImagePreview(produto.imageURL ? `http://localhost:8080/uploads/${produto.imageURL}` : null);
+    setImagePreview(produto.imageURL ? `${import.meta.env.VITE_API_URL}/uploads/${produto.imageURL}` : null);
     setShowModal(true);
   };
 
@@ -146,7 +146,7 @@ const Produtos = () => {
     try {
       if (editingProduct) {
         // EDITAR PRODUTO
-        await axios.put(`http://localhost:8080/product/${editingProduct.id}`, formDataToSend, {
+        await axios.put(`${import.meta.env.VITE_API_URL}/product/${editingProduct.id}`, formDataToSend, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -154,7 +154,7 @@ const Produtos = () => {
         });
       } else {
         // CRIAR PRODUTO
-        await axios.post("http://localhost:8080/product", formDataToSend, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/product`, formDataToSend, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -193,7 +193,7 @@ const Produtos = () => {
     setLoadingAction(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:8080/product/${deleteModal.id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/product/${deleteModal.id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -281,7 +281,7 @@ const Produtos = () => {
                 <div className="w-full h-40 bg-gray-100 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
                   {produto.imageURL ? (
                     <img
-                      src={`http://localhost:8080/uploads/${produto.imageURL}`}
+                      src={`${import.meta.env.VITE_API_URL}/uploads/${produto.imageURL}`}
                       alt={produto.name}
                       className="w-full h-full object-cover"
                     />
@@ -551,7 +551,7 @@ const Produtos = () => {
                 <div className="flex items-center gap-4 mb-4">
                   {deleteModal.imageURL ? (
                     <img
-                      src={`http://localhost:8080/uploads/${deleteModal.imageURL}`}
+                      src={`${import.meta.env.VITE_API_URL}/uploads/${deleteModal.imageURL}`}
                       alt={deleteModal.name}
                       className="w-16 h-16 object-cover rounded-lg"
                     />
