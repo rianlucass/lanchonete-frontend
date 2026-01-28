@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import Logo from "../assets/logo.png";
 
 const HeaderPrivate = () => {
-  const { logout, user } = useAuth(); // ← Adicionei o user aqui
+  const { logout, user } = useAuth();
 
   const handleLogout = () => {
     logout();

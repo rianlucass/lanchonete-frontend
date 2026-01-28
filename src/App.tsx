@@ -7,6 +7,7 @@ import Produtos from "./pages/produtos";
 import Pedidos from "./pages/Pedidos";
 import HistoricoPedidos from "./pages/HistoricoPedidos";
 import Relatorio from "./pages/relatorio";
+import Estoque from "./pages/Estoque";
 import HeaderPublic from "./components/HeaderPublic";
 import HeaderPrivate from "./components/HeaderPrivate";
 import Footer from "./components/footer";
@@ -15,7 +16,6 @@ import PublicRoute from "./routes/PublicRoute";
 
 const App: React.FC = () => {
   const { isAuthenticated, loading, user } = useAuth();
-  
 
   if (loading) {
     return null;
@@ -113,7 +113,16 @@ const App: React.FC = () => {
             </PrivateRoute>
           }
         />
-     
+
+        {/* ROTA ESTOQUE - ADMIN E FUNCIONÁRIO */}
+        <Route
+          path="/estoque"
+          element={
+            <PrivateRoute>
+              <Estoque />
+            </PrivateRoute>
+          }
+        />
 
         {/* ROTAS FUNCIONÁRIO */}
         <Route
@@ -130,6 +139,5 @@ const App: React.FC = () => {
     </>
   );
 };
-
 
 export default App;

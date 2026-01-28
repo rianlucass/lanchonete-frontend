@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Plus, Minus, ShoppingCart, Trash2, CheckCircle, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -307,7 +306,7 @@ const Pedidos = () => {
                                 <div className="w-full h-24 bg-gray-100 rounded-lg mb-3 overflow-hidden flex items-center justify-center">
                                   {product.imageURL ? (
                                     <img
-                                      src={`http://localhost:8080/uploads/${product.imageURL}`}
+                                      src={`${import.meta.env.VITE_API_URL}/uploads/${product.imageURL}`}
                                       alt={product.name}
                                       className="w-full h-full object-cover"
                                     />

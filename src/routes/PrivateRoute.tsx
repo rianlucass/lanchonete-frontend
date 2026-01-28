@@ -10,7 +10,7 @@ export default function PrivateRoute({ children }: Props) {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return null; // ou um loading spinner
+    return null;
   }
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;

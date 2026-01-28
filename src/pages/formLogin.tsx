@@ -10,30 +10,33 @@ const FormLogin = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
 
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const message = params.get("success");
-    if (message) {
-      setSuccessMessage(message);
-      window.history.replaceState({}, document.title, "/login");
+    const state = location.state as { message?: string };
+    if (state?.message) {
+      setSuccessMessage(state.message);
+      setTimeout(() => setSuccessMessage(""), 5000);
     }
   }, [location]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
+    setCredentials((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
+    setErrorMessage("");
 
     try {
       const response = await userService.login(credentials);
